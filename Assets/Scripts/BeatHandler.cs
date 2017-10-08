@@ -51,13 +51,8 @@ public class BeatHandler : MonoBehaviour {
 		else{
 			currBeat++;
 		}
-		print(currBeat);
+//		print(currBeat);
         yield return new WaitForSeconds(60.0F/tempo/4);
 		getNextBeat = true;
     }
-
-	public void onSliderChange(float val) {
-		tempo = val;
-//		Debug.Log ("value from the slider is " + val);
-	}
 }

@@ -22,7 +22,9 @@ public class AnimalPalette : MonoBehaviour {
 
 	void Start () {
 		rt = GetComponent<RectTransform> ();
-		tempoText.text = tempoSlider.value.ToString ();
+		var initTempo = tempoSlider.value;
+		BeatHandler.instance.tempo = initTempo;
+		tempoText.text = initTempo.ToString ();
 		setRandomMode (false);
 	}
 
@@ -61,8 +63,9 @@ public class AnimalPalette : MonoBehaviour {
 		}
 	}
 
-	public void changeBpmText(float val) {
+	public void changeBpm(float val) {
 		tempoText.text = val.ToString ();
+		BeatHandler.instance.tempo = val;
 	}
 
 	public void toggleRandom() {

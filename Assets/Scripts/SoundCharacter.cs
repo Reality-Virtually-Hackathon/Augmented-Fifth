@@ -9,26 +9,31 @@ public class SoundCharacter : MonoBehaviour {
     protected float DefaultAnimationSpeed = 1f;
 	private float animLength = 1.25f;
 
-    // Use this for initialization
     void Awake()
     {
         anim = GetComponent<Animator>();
         SetAnimationSpeed(DefaultAnimationSpeed);
 		BeatHandler.OnBeat += onBeat;
     }
-
-    // Update is called once per frame
+		
     void Update()
     {
+        /*
         // temp for testing
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Q))
         {
             PlayAnimation();
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            PlayAnimation2();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             StopAnimation();
+            StopAnimation2();
         }
+        */
     }
 
     public void SetAnimationSpeed(float value)
@@ -42,13 +47,25 @@ public class SoundCharacter : MonoBehaviour {
         anim.SetBool("Playing", true);
     }
 
+    public void PlayAnimation2()
+    {
+        // start the play animation
+        anim.SetBool("Playing2", true);
+    }
+
     public void StopAnimation()
     {
         // stop the play animation
         anim.SetBool("Playing", false);
     }
 
-	void onBeat() {
+    public void StopAnimation2()
+    {
+        // stop the play animation
+        anim.SetBool("Playing2", false);
+    }
+
+    void onBeat() {
 		// TODO implement
 		bool hasSoundOnNextBeat = true; // get if the this character has a sound for the next beat
 		if (hasSoundOnNextBeat) {

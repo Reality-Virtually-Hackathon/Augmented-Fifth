@@ -35,7 +35,6 @@ public class MyFocusSquare : MonoBehaviour {
 
     bool trackingInitialized;
 
-    // Use this for initialization
     void Start () {
         SquareState = FocusState.Initializing;
         trackingInitialized = true;
@@ -56,7 +55,6 @@ public class MyFocusSquare : MonoBehaviour {
         return false;
     }
 
-    // Update is called once per frame
     void Update () {
 
         //use center of screen for focusing
@@ -79,7 +77,6 @@ public class MyFocusSquare : MonoBehaviour {
             return;
         }
 
-
         #else
         var screenPosition = Camera.main.ScreenToViewportPoint(center);
         ARPoint point = new ARPoint {
@@ -88,17 +85,15 @@ public class MyFocusSquare : MonoBehaviour {
         };
 
         // prioritize reults types
-//		if (useProjectedPlanes) {
-		ARHitTestResultType[] resultTypes = { ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent };
-//		} else {
-//			ARHitTestResultType[] resultTypes = {
-//	             ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent, 
-//	            // if you want to use infinite planes use this:
-//	            /ARHitTestResultType.ARHitTestResultTypeExistingPlane,
-//	            //ARHitTestResultType.ARHitTestResultTypeHorizontalPlane, 
-//	            //ARHitTestResultType.ARHitTestResultTypeFeaturePoint
-//	        }; 
-//		}
+		var resultTypes = new List<ARHitTestResultType>();
+		resultTypes.Add(ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent);
+		if (useProjectedPlanes) {
+			var otherTypes = new List<ARHitTestResultType>();
+			otherTypes.Add(ARHitTestResultType.ARHitTestResultTypeExistingPlane);
+			otherTypes.Add(ARHitTestResultType.ARHitTestResultTypeHorizontalPlane);
+			otherTypes.Add(ARHitTestResultType.ARHitTestResultTypeFeaturePoint);
+			resultTypes.AddRange(otherTypes);
+		}
 
         foreach (ARHitTestResultType resultType in resultTypes)
         {
@@ -118,9 +113,10 @@ public class MyFocusSquare : MonoBehaviour {
             //check camera forward is facing downward
             if (Vector3.Dot(Camera.main.transform.forward, Vector3.down) > 0)
             {
-
                 //position the focus finding square a distance from camera and facing up
-                findingSquare.transform.position = Camera.main.ScreenToWorldPoint(center);
+				var pos = Camera.main.ScreenToWorldPoint(center);
+				pos.y += 0.01f; // move the square up off the plane just a little bit
+				findingSquare.transform.position = pos;
 
                 //vector from camera to focussquare
                 Vector3 vecToCamera = findingSquare.transform.position - Camera.main.transform.position;
@@ -130,7 +126,6 @@ public class MyFocusSquare : MonoBehaviour {
 
                 //find vector orthogonal to both above and up vector to find the forward vector in basis function
                 Vector3 vecForward = Vector3.Cross(vecOrthogonal, Vector3.up);
-
 
                 findingSquare.transform.rotation = Quaternion.LookRotation(vecForward,Vector3.up);
 

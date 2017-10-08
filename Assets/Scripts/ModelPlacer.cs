@@ -18,13 +18,11 @@ public class ModelPlacer : MonoBehaviour {
 	public GameObject potSequencerPrefab;
 	public GameObject taikoSequencerPrefab;
 
-	private bool isEnabled;
 	private List<GameObject> characters = new List<GameObject>();
 	public bool useInfinitePlanes;
 
 	public void setplacing(bool active){
 		focusSquare.gameObject.SetActive (active);
-		isEnabled = active;
 	}
 
 	public void make_flamingo(){
@@ -38,9 +36,7 @@ public class ModelPlacer : MonoBehaviour {
 	public void make_lizard(){
 		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_lizard, pianoSequencerPrefab);
 	}
-
-
-	// Use this for initialization
+		
 	void Start () {
 		focusSquare.gameObject.SetActive (false);
 		setplacing (false);
@@ -52,23 +48,6 @@ public class ModelPlacer : MonoBehaviour {
 			focusSquare.useProjectedPlanes = false;
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-//		foreach (var obj in characters) {
-//			foreach (Transform child in obj.transform) {
-//				if (child.CompareTag ("Sequencer")) {
-//					child.LookAt (Camera.main.transform);
-//					var turnAroundRot = Quaternion.AngleAxis (180f, Vector3.up);
-//					child.transform.localRotation *= turnAroundRot;
-//				} else if (child.CompareTag("Character")) {
-//					var cameraWithZeroY = Camera.main.transform.position;
-//					cameraWithZeroY.y = obj.transform.position.y;
-//					child.transform.LookAt (cameraWithZeroY);
-//				}
-//			}
-//		}
-	}
 
     void makeModel(Vector3 pos, GameObject model, GameObject sequencer) {
 		var parent = new GameObject ("character");
@@ -76,13 +55,12 @@ public class ModelPlacer : MonoBehaviour {
 		var y_angle = Camera.main.transform.rotation.eulerAngles.y + 180f;
 		parent.transform.rotation = Quaternion.Euler (0, y_angle, 0);
 		var charGo = Instantiate (model, parent.transform);
-		var sequencerGo = Instantiate (sequencer, parent.transform);
+		Instantiate (sequencer, parent.transform);
 		sizeObject(charGo);
 		var character = charGo.GetComponent<SoundCharacter>();
 		character.PlayAnimation ();
 		animalMenu.toggle ();
 		characters.Add (parent);
-		// TODO select model and bring up audio menu
     }
 
     void sizeObject(GameObject go) {
@@ -93,7 +71,6 @@ public class ModelPlacer : MonoBehaviour {
             bounds.Encapsulate(r.bounds);
         }
         var scaleFactor =  objectHeight / bounds.size.y;
-		Debug.LogFormat("scale factor is {0} for the original height of {1} going down to {2}", scaleFactor, bounds.size.y, objectHeight);
         go.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
     }
 }
