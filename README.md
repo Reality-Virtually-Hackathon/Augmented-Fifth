@@ -11,4 +11,4 @@ Our demo was an Iphone/Ipad AR app that consisted of placing computer rendered 3
 
 These objects, once sketched in Adobe Illustrator and animated in Blender, were attached the real world using Apple AR Toolkit and Unity. Each object was also given an unique animation (lizard moved it's mouth, flamingo moved it's body, manatee clapped it's hands).  Once animations and object tracking were working, we moved to integrate our custom built sound sequencers. Each animal object was assigned an unique sound sequencer (bells, drums, piano, etc) which the user could change to make new songs. 
 
-
+Under MIT License.
