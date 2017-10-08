@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CubeController : MonoBehaviour 
 {
 
 	private Renderer rend;
-	public bool state = false;
+	public bool cubeActivated = false;
 	public int cubeIndex;
 	Color offColor, onColor1, onColor2, onColor3, onColor4, beatColor;
 	private BeatHandler beat;
@@ -117,9 +117,11 @@ public class CubeController : MonoBehaviour
 	int getColorNum(){
 		if (colorNum == 4){
 			colorNum = 0;
+			cubeActivated = false;
 		}
 		else{
 			colorNum++;
+			cubeActivated = true;
 		}
 		return colorNum;
 	}
