@@ -20,7 +20,6 @@ public class ModelPlacer : MonoBehaviour {
 
 	private bool isEnabled;
 	private List<GameObject> characters = new List<GameObject>();
-
 	public bool useInfinitePlanes;
 
 	public void setplacing(bool active){
@@ -37,7 +36,7 @@ public class ModelPlacer : MonoBehaviour {
 	}
 
 	public void make_lizard(){
-		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_lizard, bellSequencerPrefab);
+		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_lizard, pianoSequencerPrefab);
 	}
 
 

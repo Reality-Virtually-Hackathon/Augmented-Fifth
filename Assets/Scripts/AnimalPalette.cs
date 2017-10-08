@@ -15,13 +15,15 @@ public class AnimalPalette : MonoBehaviour {
 	public Sprite hamburgerImg;
 	public Sprite xImg;
 	public Button stickerToggle;
+	public Button randomToggle;
 
 	public ModelPlacer modelplacer;
+	private float randomOffAlpha = 0.25f;
 
-	// Use this for initialization
 	void Start () {
 		rt = GetComponent<RectTransform> ();
 		tempoText.text = tempoSlider.value.ToString ();
+		setRandomMode (false);
 	}
 
 	private bool isSlow = false;
@@ -49,12 +51,6 @@ public class AnimalPalette : MonoBehaviour {
 	IEnumerator openCloseSequence(bool opening) {
 		var t = 0f;
 		var destination = opening ? 0f : rt.rect.width;
-		var newAlpha = opening ? 0f : 1f;
-		var oldAlpha = opening ? 1f : 0f;
-//		if (!opening) {
-//			button_renderer.gameObject.SetActive (true);
-//			button_renderer.SetAlpha (0f);
-//		}
 		var oldX = rt.anchoredPosition.x;
 		while (t < openCloseDuration) {
 			yield return null;
@@ -62,16 +58,23 @@ public class AnimalPalette : MonoBehaviour {
 			var delta = t / openCloseDuration;
 			var x = Mathf.Lerp (oldX, destination, delta);
 			rt.anchoredPosition = new Vector2 (x, rt.anchoredPosition.y);
-			var a = Mathf.Lerp (oldAlpha, newAlpha, delta);
-//			button_renderer.SetAlpha (a);
 		}
-//		if (opening) {
-//			button_renderer.gameObject.SetActive (false);
-//		}
 	}
 
 	public void changeBpmText(float val) {
 		tempoText.text = val.ToString ();
+	}
+
+	public void toggleRandom() {
+		setRandomMode(!BeatHandler.instance.randomMode);
+	}
+
+	void setRandomMode(bool isOn) {
+		BeatHandler.instance.randomMode = isOn;
+		var color = randomToggle.image.color;
+		var alpha = isOn ? 1f : randomOffAlpha;
+		color.a = alpha;
+		randomToggle.image.color = color;
 	}
 
 }
