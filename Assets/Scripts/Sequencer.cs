@@ -12,6 +12,8 @@ public class Sequencer : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		visible = true;
+		audible = true;
 	}
 	// Update is called once per frame
 	void Update () 

@@ -11,14 +11,12 @@ public class AnimalPalette : MonoBehaviour {
 
 
 	public CanvasRenderer button_renderer;
-	public GameObject tapAwayPanel;
 
 	public ModelPlacer modelplacer;
 
 	// Use this for initialization
 	void Start () {
 		rt = GetComponent<RectTransform> ();
-		tapAwayPanel.SetActive (false);
 	}
 
 	private bool isSlow = false;
@@ -34,7 +32,6 @@ public class AnimalPalette : MonoBehaviour {
 	}
 
 	public void toggle(){
-		Debug.Log ("TOGGLING");
 		if (openCloseCo != null) {
 			StopCoroutine (openCloseCo);
 		}
@@ -45,7 +42,6 @@ public class AnimalPalette : MonoBehaviour {
 	}
 
 	IEnumerator openCloseSequence(bool opening) {
-		Debug.LogFormat ("Are we opening? {0}", opening ? "yes" : "no");
 		var t = 0f;
 		var destination = opening ? 0f : rt.rect.width;
 		var newAlpha = opening ? 0f : 1f;
@@ -53,7 +49,6 @@ public class AnimalPalette : MonoBehaviour {
 		if (!opening) {
 			button_renderer.gameObject.SetActive (true);
 			button_renderer.SetAlpha (0f);
-			tapAwayPanel.SetActive (false);
 		}
 		var oldX = rt.anchoredPosition.x;
 		while (t < openCloseDuration) {
@@ -67,7 +62,6 @@ public class AnimalPalette : MonoBehaviour {
 		}
 		if (opening) {
 			button_renderer.gameObject.SetActive (false);
-			tapAwayPanel.SetActive (true);
 		}
 	}
 

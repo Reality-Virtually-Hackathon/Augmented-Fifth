@@ -8,11 +8,14 @@ public class CubeController : MonoBehaviour
 	public bool state = false;
 	public int cubeIndex;
 	Color offColor, onColor, beatColor;
-	public GameObject camera;
-	public BeatHandler beat;
+	private BeatHandler beat;
 	public Sequencer sequencer;
 	public bool mouseDown;
 	public bool isPercussion;
+
+	void Awake() {
+		beat = BeatHandler.instance;
+	}
 
 	// Use this for initialization
 	void Start () 
