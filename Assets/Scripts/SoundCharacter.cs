@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,8 @@ public class SoundCharacter : MonoBehaviour {
 
     protected float DefaultAnimationSpeed = 1f;
 	private float animLength = 1.25f;
+	private bool hasStarted = false;
+	public Sequencer sequencer;
 
     void Awake()
     {
@@ -66,19 +68,26 @@ public class SoundCharacter : MonoBehaviour {
     }
 
     void onBeat() {
-		// TODO implement
-		bool hasSoundOnNextBeat = true; // get if the this character has a sound for the next beat
-		if (hasSoundOnNextBeat) {
+		if (BeatHandler.instance.currBeat == 1 && !hasStarted && sequencer.sequencerActivated) {
 			StartCoroutine (beatAnimation ());
 		}
 	}
 
 	IEnumerator beatAnimation() {
+		hasStarted = true;
 		var tempo = BeatHandler.instance.tempo;
 		var secsPerBeat = 60f / tempo / 4f;
-		var speed = (1f / secsPerBeat) / animLength;
-		SetAnimationSpeed (speed);
-		yield return new WaitForSeconds (secsPerBeat / 2f);
+//		var timeTillStart = (BeatHandler.instance.numBeats - BeatHandler.instance.currBeat) * secsPerBeat;
+
 		PlayAnimation ();
+		while (true) {
+			yield return null;
+			// update speed
+			if (!sequencer.sequencerActivated) {
+				StopAnimation ();
+				hasStarted = false;
+			}
+//			SetAnimationSpeed (speed);
+		}
 	}
 }
