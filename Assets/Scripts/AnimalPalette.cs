@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AnimalPalette : MonoBehaviour {
 
@@ -9,14 +10,18 @@ public class AnimalPalette : MonoBehaviour {
 	private bool isOpen = false;
 	private Coroutine openCloseCo;
 
-
-	public CanvasRenderer button_renderer;
+	public Text tempoText;
+	public Slider tempoSlider;
+	public Sprite hamburgerImg;
+	public Sprite xImg;
+	public Button stickerToggle;
 
 	public ModelPlacer modelplacer;
 
 	// Use this for initialization
 	void Start () {
 		rt = GetComponent<RectTransform> ();
+		tempoText.text = tempoSlider.value.ToString ();
 	}
 
 	private bool isSlow = false;
@@ -38,7 +43,7 @@ public class AnimalPalette : MonoBehaviour {
 		openCloseCo = StartCoroutine (openCloseSequence (!isOpen));
 		isOpen = !isOpen;
 		modelplacer.setplacing (isOpen);
-
+		stickerToggle.image.sprite = isOpen ? xImg : hamburgerImg;
 	}
 
 	IEnumerator openCloseSequence(bool opening) {
@@ -46,10 +51,10 @@ public class AnimalPalette : MonoBehaviour {
 		var destination = opening ? 0f : rt.rect.width;
 		var newAlpha = opening ? 0f : 1f;
 		var oldAlpha = opening ? 1f : 0f;
-		if (!opening) {
-			button_renderer.gameObject.SetActive (true);
-			button_renderer.SetAlpha (0f);
-		}
+//		if (!opening) {
+//			button_renderer.gameObject.SetActive (true);
+//			button_renderer.SetAlpha (0f);
+//		}
 		var oldX = rt.anchoredPosition.x;
 		while (t < openCloseDuration) {
 			yield return null;
@@ -58,11 +63,15 @@ public class AnimalPalette : MonoBehaviour {
 			var x = Mathf.Lerp (oldX, destination, delta);
 			rt.anchoredPosition = new Vector2 (x, rt.anchoredPosition.y);
 			var a = Mathf.Lerp (oldAlpha, newAlpha, delta);
-			button_renderer.SetAlpha (a);
+//			button_renderer.SetAlpha (a);
 		}
-		if (opening) {
-			button_renderer.gameObject.SetActive (false);
-		}
+//		if (opening) {
+//			button_renderer.gameObject.SetActive (false);
+//		}
+	}
+
+	public void changeBpmText(float val) {
+		tempoText.text = val.ToString ();
 	}
 
 }

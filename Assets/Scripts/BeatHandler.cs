@@ -11,6 +11,7 @@ public class BeatHandler : MonoBehaviour {
     public static event BeatAction OnBeat;
 	public bool getNextBeat;
 	public static BeatHandler instance;
+	public bool randomMode;
 
 	void Awake() {
 		if (instance == null) {

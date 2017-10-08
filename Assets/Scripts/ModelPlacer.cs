@@ -29,15 +29,15 @@ public class ModelPlacer : MonoBehaviour {
 	}
 
 	public void make_flamingo(){
-		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_bird, bellSequencerPrefab);
+		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_bird, potSequencerPrefab);
 	}
 
 	public void make_manatee(){
-		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_manatee, potSequencerPrefab);
+		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_manatee, africanSequencerPrefab);
 	}
 
 	public void make_lizard(){
-		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_lizard, pianoSequencerPrefab);
+		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_lizard, bellSequencerPrefab);
 	}
 
 
@@ -56,30 +56,31 @@ public class ModelPlacer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		foreach (var obj in characters) {
-			foreach (Transform child in obj.transform) {
-				if (child.CompareTag ("Sequencer")) {
-					child.LookAt (Camera.main.transform);
-					var turnAroundRot = Quaternion.AngleAxis (180f, Vector3.up);
-					child.transform.localRotation *= turnAroundRot;
-				} else if (child.CompareTag("Character")) {
-					var cameraWithZeroY = Camera.main.transform.position;
-					cameraWithZeroY.y = obj.transform.position.y;
-					child.transform.LookAt (cameraWithZeroY);
-				}
-			}
-		}
+//		foreach (var obj in characters) {
+//			foreach (Transform child in obj.transform) {
+//				if (child.CompareTag ("Sequencer")) {
+//					child.LookAt (Camera.main.transform);
+//					var turnAroundRot = Quaternion.AngleAxis (180f, Vector3.up);
+//					child.transform.localRotation *= turnAroundRot;
+//				} else if (child.CompareTag("Character")) {
+//					var cameraWithZeroY = Camera.main.transform.position;
+//					cameraWithZeroY.y = obj.transform.position.y;
+//					child.transform.LookAt (cameraWithZeroY);
+//				}
+//			}
+//		}
 	}
 
     void makeModel(Vector3 pos, GameObject model, GameObject sequencer) {
 		var parent = new GameObject ("character");
 		parent.transform.position = pos;
-		parent.transform.rotation = Quaternion.identity;
+		var y_angle = Camera.main.transform.rotation.eulerAngles.y + 180f;
+		parent.transform.rotation = Quaternion.Euler (0, y_angle, 0);
 		var charGo = Instantiate (model, parent.transform);
 		var sequencerGo = Instantiate (sequencer, parent.transform);
 		sizeObject(charGo);
 		var character = charGo.GetComponent<SoundCharacter>();
-		character.Play ();
+		character.PlayAnimation ();
 		animalMenu.toggle ();
 		characters.Add (parent);
 		// TODO select model and bring up audio menu
@@ -95,6 +96,5 @@ public class ModelPlacer : MonoBehaviour {
         var scaleFactor =  objectHeight / bounds.size.y;
 		Debug.LogFormat("scale factor is {0} for the original height of {1} going down to {2}", scaleFactor, bounds.size.y, objectHeight);
         go.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-        go.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }

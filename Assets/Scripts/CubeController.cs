@@ -7,11 +7,12 @@ public class CubeController : MonoBehaviour
 	private Renderer rend;
 	public bool state = false;
 	public int cubeIndex;
-	Color offColor, onColor, beatColor;
+	Color offColor, onColor1, onColor2, onColor3, onColor4, beatColor;
 	private BeatHandler beat;
 	public Sequencer sequencer;
 	public bool mouseDown;
 	public bool isPercussion;
+	public int colorNum = 0;
 
 	void Awake() {
 		beat = BeatHandler.instance;
@@ -22,17 +23,29 @@ public class CubeController : MonoBehaviour
 	{
 		if (isPercussion){
 			offColor = new Color();
-			ColorUtility.TryParseHtmlString ("#FF8400FF", out offColor);
-			onColor = new Color();
-			ColorUtility.TryParseHtmlString ("#FF0079FF", out onColor);
+			ColorUtility.TryParseHtmlString ("#FFFFFFFF", out offColor);
+			onColor4 = new Color();
+			ColorUtility.TryParseHtmlString ("#00FFCEFF", out onColor4);
+			onColor3 = new Color();
+			ColorUtility.TryParseHtmlString ("#00C3FFFF", out onColor3);
+			onColor2 = new Color();
+			ColorUtility.TryParseHtmlString ("#2727FFFF", out onColor2);
+			onColor1 = new Color();
+			ColorUtility.TryParseHtmlString ("#9500FFFF", out onColor1);
 			beatColor = new Color();
 			ColorUtility.TryParseHtmlString ("#00FF0000", out beatColor);
 		}
 		else{
 			offColor = new Color();
-			ColorUtility.TryParseHtmlString ("#2C5BB6FF", out offColor);
-			onColor = new Color();
-			ColorUtility.TryParseHtmlString ("#00F4FFFF", out onColor);
+			ColorUtility.TryParseHtmlString ("#FFFFFFFF", out offColor);
+			onColor4 = new Color();
+			ColorUtility.TryParseHtmlString ("#FFE000FF", out onColor4);
+			onColor3 = new Color();
+			ColorUtility.TryParseHtmlString ("#FF9D00FF", out onColor3);
+			onColor2 = new Color();
+			ColorUtility.TryParseHtmlString ("#FF4E00FF", out onColor2);
+			onColor1 = new Color();
+			ColorUtility.TryParseHtmlString ("#FF0062FF", out onColor1);
 			beatColor = new Color();
 			ColorUtility.TryParseHtmlString ("#00FF0000", out beatColor);
 		}
@@ -66,23 +79,22 @@ public class CubeController : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		if(state == false)
-		{
-			gameObject.GetComponent<Renderer>().material.color = onColor;
-		}
-		else
-			gameObject.GetComponent<Renderer>().material.color = offColor;
-
-		state =! state;
+		colorNum = getColorNum();
+		switchColor(colorNum);
 	}
 
 	void playSound() {
 		if (sequencer.audible){
 			if (beat.currBeat == cubeIndex){
-				if (state){
-					System.Random rnd = new System.Random();
-					int rndSound = rnd.Next(0, sequencer.sounds.Length);
-					sequencer.audio.PlayOneShot(sequencer.sounds[rndSound]);
+				if (colorNum != 0){
+					if (beat.randomMode){
+						System.Random rnd = new System.Random();
+						int rndSound = rnd.Next(0, sequencer.sounds.Length);
+						sequencer.audio.PlayOneShot(sequencer.sounds[rndSound]);
+					}
+					else{
+						sequencer.audio.PlayOneShot(sequencer.sounds[colorNum-1]);
+					}
 					//sequencer.audio.PlayOneShot(sequencer.sounds[cubeIndex]);
 				}
 			}
@@ -98,14 +110,42 @@ public class CubeController : MonoBehaviour
 			gameObject.GetComponent<Renderer>().material.color = beatColor;
 		}
         yield return new WaitForSeconds(60.0F/beat.tempo/4);
-		if (state){
-			gameObject.GetComponent<Renderer>().material.color = onColor;
-		}
-		else{
-			gameObject.GetComponent<Renderer>().material.color = offColor;
-		}
+		switchColor(colorNum);
 		yield return null;
     }
 
+	int getColorNum(){
+		if (colorNum == 4){
+			colorNum = 0;
+		}
+		else{
+			colorNum++;
+		}
+		return colorNum;
+	}
 
+	void switchColor(int colorNum){
+		if (colorNum == 0){
+			gameObject.GetComponent<Renderer>().material.color = offColor;
+			}
+		if (beat.randomMode){
+			if (colorNum != 0){
+				gameObject.GetComponent<Renderer>().material.color = onColor1;
+			}
+		}
+		else{
+			if (colorNum == 1){
+				gameObject.GetComponent<Renderer>().material.color = onColor1;
+			}
+			if (colorNum == 2){
+				gameObject.GetComponent<Renderer>().material.color = onColor2;
+			}
+			if (colorNum == 3){
+				gameObject.GetComponent<Renderer>().material.color = onColor3;
+			}
+			if (colorNum == 4){
+				gameObject.GetComponent<Renderer>().material.color = onColor4;
+			}
+		}
+	}
 }
