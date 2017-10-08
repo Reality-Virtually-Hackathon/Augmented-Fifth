@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainController : MonoBehaviour
+public class Sequencer : MonoBehaviour
 {
 
 	public GameObject[] cubes;

@@ -10,7 +10,7 @@ public class CubeController : MonoBehaviour
 	Color offColor, onColor, beatColor;
 	public GameObject camera;
 	public BeatHandler beat;
-	public MainController controller;
+	public Sequencer sequencer;
 	public bool mouseDown;
 	public bool isPercussion;
 
@@ -41,7 +41,7 @@ public class CubeController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (!controller.visible){
+		if (!sequencer.visible){
 			gameObject.GetComponent<Renderer>().enabled = false;
 		}
 		else{
@@ -74,13 +74,13 @@ public class CubeController : MonoBehaviour
 	}
 
 	void playSound() {
-		if (controller.audible){
+		if (sequencer.audible){
 			if (beat.currBeat == cubeIndex){
 				if (state){
 					System.Random rnd = new System.Random();
-					int rndSound = rnd.Next(0, controller.sounds.Length);
-					controller.audio.PlayOneShot(controller.sounds[rndSound]);
-					//controller.audio.PlayOneShot(controller.sounds[cubeIndex]);
+					int rndSound = rnd.Next(0, sequencer.sounds.Length);
+					sequencer.audio.PlayOneShot(sequencer.sounds[rndSound]);
+					//sequencer.audio.PlayOneShot(sequencer.sounds[cubeIndex]);
 				}
 			}
 		}
