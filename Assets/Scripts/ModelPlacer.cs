@@ -26,7 +26,7 @@ public class ModelPlacer : MonoBehaviour {
 	}
 
 	public void make_flamingo(){
-		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_bird, potSequencerPrefab);
+		makeModel (focusSquare.foundSquare.transform.position, modelPrefab_bird, bellSequencerPrefab);
 	}
 
 	public void make_manatee(){
@@ -49,16 +49,16 @@ public class ModelPlacer : MonoBehaviour {
 		}
 	}
 
-    void makeModel(Vector3 pos, GameObject model, GameObject sequencer) {
+    void makeModel(Vector3 pos, GameObject model, GameObject sequencerPrefab) {
 		var parent = new GameObject ("character");
 		parent.transform.position = pos;
 		var y_angle = Camera.main.transform.rotation.eulerAngles.y + 180f;
 		parent.transform.rotation = Quaternion.Euler (0, y_angle, 0);
 		var charGo = Instantiate (model, parent.transform);
-		Instantiate (sequencer, parent.transform);
+		var sequencer = Instantiate (sequencerPrefab, parent.transform).GetComponent<Sequencer>();
 		sizeObject(charGo);
 		var character = charGo.GetComponent<SoundCharacter>();
-		character.PlayAnimation ();
+		character.sequencer = sequencer;
 		animalMenu.toggle ();
 		characters.Add (parent);
     }
